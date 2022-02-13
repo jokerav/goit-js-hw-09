@@ -59,9 +59,9 @@ function onStartClick() {
 function updeteUI(time) {
     const { days, hours, minutes, seconds } = time;
     daysRef.textContent = days;
-    hoursRef.textContent = hours;
-    minutesRef.textContent = minutes;
-    secondsRef.textContent = seconds;
+    hoursRef.textContent = pad(hours);
+    minutesRef.textContent = pad(minutes);
+    secondsRef.textContent = pad(seconds);
 }
 
 function convertMs(ms) {
@@ -74,11 +74,11 @@ function convertMs(ms) {
     // Remaining days
     const days = Math.floor(ms / day);
     // Remaining hours
-    const hours = pad(Math.floor((ms % day) / hour));
+    const hours = Math.floor((ms % day) / hour);
     // Remaining minutes
-    const minutes = pad(Math.floor(((ms % day) % hour) / minute));
+    const minutes = Math.floor(((ms % day) % hour) / minute);
     // Remaining seconds
-    const seconds = pad(Math.floor((((ms % day) % hour) % minute) / second));
+    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
     return { days, hours, minutes, seconds };
 }
