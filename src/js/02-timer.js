@@ -9,36 +9,59 @@ const secondsRef = document.querySelector('span[data-seconds]');
 const btnStart = document.querySelector('button[data-start]');
 btnStart.setAttribute('disabled', true);
 
+let futureDate = 0;
+
+const timer = {
+    intervalID: null,
+    isActive: false,
+    start() {
+        if (this.isActive) {
+            return;
+        }
+        this.isActive = true;
+        this.intervalID = setInterval(() => {
+            const deltaTime = futureDate - Date.now();
+            updeteUI(convertMs(deltaTime));
+            if (deltaTime <= 1000) {
+                this.stop();
+            }
+        }, 1000);
+    },
+    stop() {
+        clearInterval(this.intervalID);
+    },
+};
+
 flatpickr('#datetime-picker', {
     enableTime: true,
     time_24hr: true,
     defaultDate: new Date(),
     minuteIncrement: 1,
     onClose(selectedDates) {
-        //console.log(selectedDates[0]);
         onDateSelect(selectedDates[0]);
     },
 });
 
 function onDateSelect(date) {
-    if (date.getTime() < Date.now()) {
+    futureDate = date.getTime();
+    if (futureDate < Date.now()) {
         window.alert('Please choose a date in the future');
         return;
     }
     btnStart.removeAttribute('disabled');
-    btnStart.addEventListener('click', onStart(date));
+    btnStart.addEventListener('click', onStartClick);
 }
-
-function onStart(date) {
-    const timer = setInterval(updeteUI(date), 1000);
+function onStartClick() {
+    timer.start();
 }
-function updeteUI(date) {
-    const { days, hours, minutes, seconds } = convertMs(date.getTime() - Date.now());
+function updeteUI(time) {
+    const { days, hours, minutes, seconds } = time;
     daysRef.textContent = days;
     hoursRef.textContent = hours;
     minutesRef.textContent = minutes;
     secondsRef.textContent = seconds;
 }
+
 function convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
@@ -49,11 +72,15 @@ function convertMs(ms) {
     // Remaining days
     const days = Math.floor(ms / day);
     // Remaining hours
-    const hours = Math.floor((ms % day) / hour);
+    const hours = pad(Math.floor((ms % day) / hour));
     // Remaining minutes
-    const minutes = Math.floor(((ms % day) % hour) / minute);
+    const minutes = pad(Math.floor(((ms % day) % hour) / minute));
     // Remaining seconds
-    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+    const seconds = pad(Math.floor((((ms % day) % hour) % minute) / second));
 
     return { days, hours, minutes, seconds };
+}
+
+function pad(value) {
+    return String(value).padStart(2, '0');
 }
