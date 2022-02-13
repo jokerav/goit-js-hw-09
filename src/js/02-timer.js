@@ -1,4 +1,5 @@
 import flatpickr from 'flatpickr';
+import Notiflix from 'notiflix';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const daysRef = document.querySelector('span[data-days]');
@@ -29,6 +30,7 @@ const timer = {
     },
     stop() {
         clearInterval(this.intervalID);
+        Notiflix.Notify.success('Pizza party will start right now!');
     },
 };
 
@@ -45,7 +47,7 @@ flatpickr('#datetime-picker', {
 function onDateSelect(date) {
     futureDate = date.getTime();
     if (futureDate < Date.now()) {
-        window.alert('Please choose a date in the future');
+        Notiflix.Notify.failure('Please choose a date in the future');
         return;
     }
     btnStart.removeAttribute('disabled');
