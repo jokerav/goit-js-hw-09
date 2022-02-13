@@ -30,7 +30,7 @@ const timer = {
     },
     stop() {
         clearInterval(this.intervalID);
-        Notiflix.Notify.success('Pizza party will start right now!');
+        Notiflix.Notify.success(' The pizza party starts right now!');
     },
 };
 
