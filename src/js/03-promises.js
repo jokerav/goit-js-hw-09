@@ -11,13 +11,10 @@ function onSubmit(e) {
     const firstDelay = inputFirstDelay.valueAsNumber;
     const step = inputStep.valueAsNumber;
     const amount = inputAmount.valueAsNumber;
-    createPromise(1, firstDelay);
-    let timerCount = step;
-    if (amount > 1) {
-        for (let i = 2; i <= amount; i += 1) {
-            createPromise(i, timerCount + firstDelay);
-            timerCount += step;
-        }
+    let timerCount = 0;
+    for (let i = 1; i <= amount; i += 1) {
+        createPromise(i, timerCount + firstDelay);
+        timerCount += step;
     }
 }
 
