@@ -2,6 +2,7 @@ import flatpickr from 'flatpickr';
 import Notiflix from 'notiflix';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const inputCalendar = document.querySelector('#datetime-picker');
 const daysRef = document.querySelector('span[data-days]');
 const hoursRef = document.querySelector('span[data-hours]');
 const minutesRef = document.querySelector('span[data-minutes]');
@@ -20,6 +21,7 @@ const timer = {
             return;
         }
         this.isActive = true;
+        inputCalendar.disabled = true;
         this.intervalID = setInterval(() => {
             const deltaTime = futureDate - Date.now();
             updeteUI(convertMs(deltaTime));
@@ -31,6 +33,7 @@ const timer = {
     stop() {
         clearInterval(this.intervalID);
         Notiflix.Notify.success(' The pizza party starts right now!');
+        inputCalendar.disabled = false;
     },
 };
 
