@@ -22,6 +22,7 @@ const timer = {
         }
         this.isActive = true;
         inputCalendar.disabled = true;
+        btnStart.disabled = true;
         this.intervalID = setInterval(() => {
             const deltaTime = futureDate - Date.now();
             updeteUI(convertMs(deltaTime));
